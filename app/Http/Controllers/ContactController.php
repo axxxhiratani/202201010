@@ -11,7 +11,6 @@ class ContactController extends Controller
     //
     public function add(Request $request)
     {
-
         $request->validate([
             "firstname" => "required",
             "secondname" => "required",
@@ -29,7 +28,6 @@ class ContactController extends Controller
             "address.required" => "入力必須です",
             "opinion.required" => "入力必須です",
             "opinion.max" => ":max 文字以下で入力してください",
-
         ]);
         $data =[
             "firstname" => $request->firstname,
@@ -44,7 +42,6 @@ class ContactController extends Controller
         $request->session()->put("store",$data);
         return view("create",$data);
     }
-
     public function store(Request $request)
     {
         $data = $request->session()->get("store");
@@ -59,17 +56,14 @@ class ContactController extends Controller
         ]);
         return view("result");
     }
-
     public function index(Request $request){
         $contacts = Contact::paginate(10);
         $count = count(Contact::all());
         $count_now = count($contacts);
         $page = $request->page ? $request->page : 1;
         $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
-
         return view("admin",compact("contacts","message"));
     }
-
     public function search(Request $request)
     {
         $log_sql = $request->session()->get("log_sql");
@@ -111,24 +105,18 @@ class ContactController extends Controller
                 array_push($sql,$data);
             }
         }
-
         $contacts = Contact::where($sql)->paginate(10);
         $request->session()->put("log_sql",$sql);
-
         $count = count(Contact::where($sql)->get());
         $count_now = count($contacts);
         $page = $request->page ? $request->page : 1;
         $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
-
         return view("search",compact("contacts","message"));
-
-
     }
     public function delete(Request $request){
         Contact::where("id",$request->id)->delete();
         return redirect("/search");
     }
-
     public function reset()
     {
         session()->forget("log_sql");
