@@ -67,7 +67,6 @@
                     localStorage.setItem("address",JSON.stringify(data));
                     localStorage.setItem("building_name",JSON.stringify(data));
                     localStorage.setItem("opinion",JSON.stringify(data));
-
                 }
             },
             computed:{
@@ -76,6 +75,5 @@
                 this.reset();
             }
         })
-  </script>
-
+    </script>
 </html>

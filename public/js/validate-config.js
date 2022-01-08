@@ -44,7 +44,7 @@ $(function(){
           },
         postcode: {
             required: '入力必須です',
-            rangelength:'形式に誤りがあります',
+            rangelength: '形式に誤りがあります',
           },
         address: {
             required: '入力必須です',

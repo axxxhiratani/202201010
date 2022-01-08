@@ -24,6 +24,7 @@
     .search{
         width: 100%;
         border: 2px solid #000;
+        padding: 20px 30px;
     }
     .input--container{
         margin: 20px 0;
@@ -92,9 +93,6 @@
         border: 1px solid #e6e6fa;
         border-radius: 5px;
     }
-    .menu{
-        margin: 20px 0;
-    }
     .result{
         width: 100%;
     }
@@ -107,7 +105,12 @@
         color: #fff;
         border-radius: 5px;
     }
+    .td__button:hover{
+        background: #fff;
+        color:#000;
+    }
     .menu{
+        margin: 20px 0;
         display: flex;
         justify-content: space-between;
     }
@@ -120,18 +123,17 @@
     .page{
         color: #000;
     }
-    .activecustom{
-        background: #000;
-        color: #fff;
-    }
     table{
         margin: 0 auto;
         width: 100%;
     }
     .showopinion{
-        width: 400px;
+        width: 42%;
         overflow-wrap: break-word;
         cursor: pointer;
+    }
+    .gender{
+        white-space: nowrap;
     }
 </style>
 <body>
@@ -187,7 +189,7 @@
                         <th scope="col">
                             お名前
                         </th>
-                        <th scope="col">
+                        <th scope="col" class="gender">
                             性別
                         </th>
                         <th scope="col">
@@ -209,7 +211,7 @@
                             <td>
                                 {{$contact->fullname}}
                             </td>
-                            <td>
+                            <td class="gender">
                                 @if ($contact->gender == 1)
                                     男性
                                 @else

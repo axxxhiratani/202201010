@@ -9,7 +9,7 @@
 </head>
 <style>
     .container{
-        margin: 20px auto;
+        margin: 40px auto;
         padding: 0 auto;
         text-align: center;
         width: 80%;
@@ -19,7 +19,7 @@
     }
     .container--table__title{
         font-weight: bold;
-        font-size: 20px;
+        font-size: 30px;
     }
     .container--table__button{
         padding: 10px 20px;
@@ -28,7 +28,7 @@
         border-radius: 5px;
         color: white;
         font-weight: bold;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         cursor: pointer;
     }
     .container--table__button:hover{

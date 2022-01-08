@@ -16,7 +16,7 @@
     }
     .container--title{
         font-weight: bold;
-        font-size: 20px;
+        font-size: 30px;
     }
     .input--text{
         border: solid 1.5px #c0c0c0;
@@ -45,9 +45,10 @@
         text-align: left;
     }
     .th{
-        width: 20%;
+        width: 16%;
         text-align: left;
         font-weight: bold;
+        padding: 10px 0;
     }
     .td{
         width: 80%;
@@ -62,7 +63,7 @@
         flex-wrap: wrap;
     }
     .input--text--postcode{
-        width: 95%;
+        width: 90%;
     }
 
     .td__postcode__icon{
@@ -96,6 +97,7 @@
         display: inline-block;
         cursor:	pointer;
         position: relative;
+        margin-right: 10px;
     }
     .td--radio__label:before {
         content: '';
@@ -281,6 +283,7 @@
                     localStorage.setItem("email",JSON.stringify(this.email));
                 },
                 postcode: function(){
+                    this.postcode =  this.checkFormat(this.postcode);
                     this.postcode = this.changeFormat(this.postcode);
                     if(this.flg){
                         this.search();
@@ -318,6 +321,13 @@
                     var result = new String( value ).match(/\d|\-|\+/g);
                     result = result.join("");
                     return result;
+                },
+                checkFormat:function(str){
+                    str = str.replace( /[Ａ-Ｚａ-ｚ０-９－！”＃＄％＆’（）＝＜＞，．？＿［］｛｝＠＾～￥]/g, function(s) {
+                        return String.fromCharCode(s.charCodeAt(0) - 65248);
+                    });
+
+                    return str;
                 },
                 search:function(){
                     let api = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=';
