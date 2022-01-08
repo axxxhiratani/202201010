@@ -68,6 +68,7 @@
         width: 4%;
         display: inline-block;
         font-weight: bold;
+        margin-top: 15px;
     }
 
     button {
@@ -124,6 +125,8 @@
     }
     .example{
         color: #d3d3d3;
+        margin-top: 10px;
+        margin-left: 10px;
     }
 
 </style>
@@ -278,7 +281,7 @@
                 postcode: function(){
 
                     this.postcode = this.changeFormat(this.postcode);
-                    // this.search();
+                    this.search();
                     localStorage.setItem("postcode",JSON.stringify(this.postcode));
                 },
                 address: function(){

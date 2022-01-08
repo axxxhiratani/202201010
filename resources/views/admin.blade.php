@@ -39,6 +39,7 @@
         display: inline-block;
         cursor:	pointer;
         position: relative;
+        margin-right: 15px;
     }
     .input--container__label:before {
         content: '';
@@ -66,12 +67,17 @@
     }
     .input--container--container__button{
         display:block;
-        width: 20%;
-        margin: 0 auto;
+        width: 15%;
+        margin: 10px auto;
         text-align: center;
         color: #fff;
-        border-radius: 5px;
+        border-radius: 3px;
         background: #000;
+        padding: 10px 25px;
+    }
+    .input--container--container__button:hover{
+        background: #fff;
+        color: #000;
     }
     .input--container--container__reset{
         display: block;
@@ -89,21 +95,12 @@
     .menu{
         margin: 20px 0;
     }
-    .table{
-        width: 100%;
-    }
-    .tr{
-        display: flex;
+    .result{
         width: 100%;
     }
     .headline{
-    }
-    .td{
-        width: 12%;
-        overflow-wrap: break-word;
-    }
-    .opinion{
-        width: 35%;
+        border: #fff solid 3px;
+        border-bottom: #000 solid 3px;
     }
     .td__button{
         background: #000;
@@ -127,7 +124,15 @@
         background: #000;
         color: #fff;
     }
-
+    table{
+        margin: 0 auto;
+        width: 100%;
+    }
+    .showopinion{
+        width: 400px;
+        overflow-wrap: break-word;
+        cursor: pointer;
+    }
 </style>
 <body>
     <div class="title">
@@ -140,9 +145,8 @@
             <form action="/admin" method="post">
                 @csrf
                 <div class="input--container">
-                    <label for="name" class="input--container__item">名前</label>
+                    <label for="name" class="input--container__item">お名前</label>
                     <input type="text" name="name" value="" id="name" class="input--container__text">
-
                     <label class="input--container__item">性別</label>
                     <input type="radio" name="gender" value="0" class="input--container__radio" id="radio1" checked>
                     <label for="radio1" class="input--container__label">全て</label>
@@ -167,77 +171,75 @@
                 </div>
             </form>
         </div>
-        <div class="table">
+        <div class="result">
             <div class="menu">
                 <div class="">{{$message}}</div>
                 <div class="page">
                     {{$contacts->links()}}
                 </div>
             </div>
-            <div class="tr headline">
-                <div class="td">
-                    id
-                </div>
-                <div class="td">
-                    お名前
-                </div>
-                <div class="td">
-                    性別
-                </div>
-                <div class="td">
-                    メールアドレス
-                </div>
-                <div class="th">
-                    ご意見
-                </div>
-                <div class="td">
-
-                </div>
-            </div>
-            @foreach ($contacts as $contact)
-                <div class="tr">
-                    <div class="td">
-                        {{$contact->id}}
-                    </div>
-                    <div class="td">
-                        {{$contact->fullname}}
-                    </div>
-                    <div class="td">
-                        @if ($contact->gender == 1)
-                            男性
-                        @else
-                            女性
-                        @endif
-                    </div>
-                    <div class="td">
-                        {{$contact->email}}
-                    </div>
-                    <div class="showopinion opinion" v-on:mouseover="show({{$loop->index}})" v-on:mouseleave="hide({{$loop->index}})">
-                        <span class="limit">
-                            {{mb_strimwidth($contact->opinion,0,25,"...","UTF-8")}}
-                        </span>
-                        <span class="show">
-                            {{$contact->opinion}}
-                        </span>
-                    </div>
-                    <div class="td">
-                        <form action="/delete" method="post">
-                            @csrf
-                            <input type="hidden" name="id" value="{{$contact->id}}">
-                            <button class="td__button">削除</button>
-                        </form>
-                    </div>
-                </div>
-            @endforeach
+            <table class="table">
+                <thead>
+                    <tr class="headline">
+                        <th scope="col">
+                            id
+                        </th>
+                        <th scope="col">
+                            お名前
+                        </th>
+                        <th scope="col">
+                            性別
+                        </th>
+                        <th scope="col">
+                            メールアドレス
+                        </th>
+                        <th scope="col">
+                            ご意見
+                        </th>
+                        <th scope="col">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($contacts as $contact)
+                        <tr>
+                            <td>
+                                {{$contact->id}}
+                            </td>
+                            <td>
+                                {{$contact->fullname}}
+                            </td>
+                            <td>
+                                @if ($contact->gender == 1)
+                                    男性
+                                @else
+                                    女性
+                                @endif
+                            </td>
+                            <td>
+                                {{$contact->email}}
+                            </td>
+                            <td class="showopinion" v-on:mouseover="show({{$loop->index}})" v-on:mouseleave="hide({{$loop->index}})">
+                                <span class="limit">
+                                    {{mb_strimwidth($contact->opinion,0,53,"...","UTF-8")}}
+                                </span>
+                                <span class="show">
+                                    {{$contact->opinion}}
+                                </span>
+                            </td>
+                            <td>
+                                <form action="/delete" method="post">
+                                    @csrf
+                                    <input type="hidden" name="id" value="{{$contact->id}}">
+                                    <button class="td__button">削除</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+            </table>
         </div>
-
-
-
     </div>
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>

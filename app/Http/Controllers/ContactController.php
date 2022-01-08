@@ -11,6 +11,7 @@ class ContactController extends Controller
     //
     public function add(Request $request)
     {
+        //バリデーションの追加
         $request->validate([
             "firstname" => "required",
             "secondname" => "required",
@@ -29,6 +30,7 @@ class ContactController extends Controller
             "opinion.required" => "入力必須です",
             "opinion.max" => ":max 文字以下で入力してください",
         ]);
+        // データをセッションに保存
         $data =[
             "firstname" => $request->firstname,
             "secondname" => $request->secondname,
@@ -56,14 +58,10 @@ class ContactController extends Controller
         ]);
         return view("result");
     }
-
-
     public function index(Request $request)
     {
         $sql = $request->session()->get("log_sql");
-
         if($sql){
-
             //検索履歴がある場合
             $contacts = Contact::where($sql)->paginate(10);
             $request->session()->put("log_sql",$sql);
@@ -73,33 +71,23 @@ class ContactController extends Controller
             if($count == 0){
                 $message = "0件";
             }else{
-                $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
+                $message = "全".$count."件中　".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
             }
         }else{
-
             //検索履歴がない場合
-
-
             $contacts = Contact::where($sql)->paginate(10);
-
-
-
             $count = count(Contact::all());
             $count_now = count($contacts);
             $page = $request->page ? $request->page : 1;
             if($count == 0){
                 $message = "0件";
             }else{
-                $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
+                $message = "全".$count."件中　".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
             }
         }
-
         $request->session()->put("page",$page);
         return view("admin",compact("contacts","message"));
     }
-
-
-
     public function search(Request $request)
     {
         $log_sql = $request->session()->get("log_sql");
@@ -108,6 +96,7 @@ class ContactController extends Controller
         }else{
             $sql = array();
         }
+        //条件を$sql配列に代入
         if($request->flg){
             $sql = array();
             if($request->name){
@@ -149,13 +138,14 @@ class ContactController extends Controller
         if($count == 0){
             $message = "0件";
         }else{
-            $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
+            $message = "全".$count."件中　".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
         }
         $request->session()->put("page",$page);
         return view("admin",compact("contacts","message"));
     }
     public function delete(Request $request)
     {
+        //page番号を渡してリダイレクトする
         Contact::where("id",$request->id)->delete();
         $page_log = $request->session()->get("page");
         if($page_log){
@@ -163,11 +153,11 @@ class ContactController extends Controller
         }else{
             $url = "/admin";
         }
-
         return redirect($url);
     }
     public function reset()
     {
+        //セッションを全て破棄してリダイレクトする
         session()->forget("log_sql");
         session()->forget("page");
         return redirect("/admin");

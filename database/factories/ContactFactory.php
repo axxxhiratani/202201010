@@ -29,7 +29,7 @@ class ContactFactory extends Factory
         "postcode" => "sfdaf",
         "address" => $this->faker->address(),
         "building_name" => $this->faker->word(),
-        "opinion" => $this->faker->text(30),
+        "opinion" => $this->faker->text(100),
         ];
     }
 }

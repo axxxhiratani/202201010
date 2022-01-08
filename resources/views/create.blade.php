@@ -9,7 +9,7 @@
 </head>
 <style>
     .container{
-        margin: 0 auto;
+        margin: 20px auto;
         padding: 0 auto;
         text-align: center;
         width: 80%;
