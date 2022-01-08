@@ -56,14 +56,50 @@ class ContactController extends Controller
         ]);
         return view("result");
     }
-    public function index(Request $request){
-        $contacts = Contact::paginate(10);
-        $count = count(Contact::all());
-        $count_now = count($contacts);
-        $page = $request->page ? $request->page : 1;
-        $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
+
+
+    public function index(Request $request)
+    {
+        $sql = $request->session()->get("log_sql");
+
+        if($sql){
+
+            //検索履歴がある場合
+            $contacts = Contact::where($sql)->paginate(10);
+            $request->session()->put("log_sql",$sql);
+            $count = count(Contact::where($sql)->get());
+            $count_now = count($contacts);
+            $page = $request->page ? $request->page : 1;
+            if($count == 0){
+                $message = "0件";
+            }else{
+                $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
+            }
+        }else{
+
+            //検索履歴がない場合
+
+
+            $contacts = Contact::where($sql)->paginate(10);
+
+
+
+            $count = count(Contact::all());
+            $count_now = count($contacts);
+            $page = $request->page ? $request->page : 1;
+            if($count == 0){
+                $message = "0件";
+            }else{
+                $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
+            }
+        }
+
+        $request->session()->put("page",$page);
         return view("admin",compact("contacts","message"));
     }
+
+
+
     public function search(Request $request)
     {
         $log_sql = $request->session()->get("log_sql");
@@ -110,16 +146,30 @@ class ContactController extends Controller
         $count = count(Contact::where($sql)->get());
         $count_now = count($contacts);
         $page = $request->page ? $request->page : 1;
-        $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
-        return view("search",compact("contacts","message"));
+        if($count == 0){
+            $message = "0件";
+        }else{
+            $message = "全".$count."件中".( ($page-1) * 10 +1) ."~".(($page-1) * 10)+($count_now)."件";
+        }
+        $request->session()->put("page",$page);
+        return view("admin",compact("contacts","message"));
     }
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         Contact::where("id",$request->id)->delete();
-        return redirect("/search");
+        $page_log = $request->session()->get("page");
+        if($page_log){
+            $url = "/admin?page=".$page_log;
+        }else{
+            $url = "/admin";
+        }
+
+        return redirect($url);
     }
     public function reset()
     {
         session()->forget("log_sql");
+        session()->forget("page");
         return redirect("/admin");
     }
 }

@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{asset('/css/reset.css')}}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Document</title>
 </head>
 <style>
+    .container{
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px 30px;
+    }
     .title{
         text-align: center;
         margin: 0 auto;
@@ -16,10 +22,8 @@
         margin: 20px 0;
     }
     .search{
-        width: 90%;
-        margin: 0 auto;
+        width: 100%;
         border: 2px solid #000;
-        padding: 20px 30px;
     }
     .input--container{
         margin: 20px 0;
@@ -86,22 +90,20 @@
         margin: 20px 0;
     }
     .table{
-        width: 90%;
-        margin: 0 auto;
+        width: 100%;
     }
     .tr{
         display: flex;
-        justify-content: space-between;
-
+        width: 100%;
     }
-    .th{
-        width: 15%;
+    .headline{
     }
     .td{
-        display: inline-block;
-        width: 15%;
-        margin: 10px 0px;
-        overflow-wrap:  break-word;
+        width: 12%;
+        overflow-wrap: break-word;
+    }
+    .opinion{
+        width: 35%;
     }
     .td__button{
         background: #000;
@@ -112,15 +114,18 @@
         display: flex;
         justify-content: space-between;
     }
-
     .limit{
         display: block;
     }
     .show{
         display: none;
     }
-    li{
+    .page{
         color: #000;
+    }
+    .activecustom{
+        background: #000;
+        color: #fff;
     }
 
 </style>
@@ -132,7 +137,7 @@
     </div>
     <div class="container" id="app">
         <div class="search">
-            <form action="/search" method="get">
+            <form action="/admin" method="post">
                 @csrf
                 <div class="input--container">
                     <label for="name" class="input--container__item">名前</label>
@@ -160,9 +165,6 @@
                     <input type="hidden" name="flg" value="true">
                     <a href="/reset" class="input--container--container__reset">リセット</a>
                 </div>
-                <div>
-
-                </div>
             </form>
         </div>
         <div class="table">
@@ -172,23 +174,23 @@
                     {{$contacts->links()}}
                 </div>
             </div>
-            <div class="tr">
-                <div class="th">
+            <div class="tr headline">
+                <div class="td">
                     id
                 </div>
-                <div class="th">
+                <div class="td">
                     お名前
                 </div>
-                <div class="th">
+                <div class="td">
                     性別
                 </div>
-                <div class="th">
+                <div class="td">
                     メールアドレス
                 </div>
                 <div class="th">
                     ご意見
                 </div>
-                <div class="th">
+                <div class="td">
 
                 </div>
             </div>
@@ -210,7 +212,7 @@
                     <div class="td">
                         {{$contact->email}}
                     </div>
-                    <div class="td showopinion" v-on:mouseover="show({{$loop->index}})" v-on:mouseleave="hide({{$loop->index}})">
+                    <div class="showopinion opinion" v-on:mouseover="show({{$loop->index}})" v-on:mouseleave="hide({{$loop->index}})">
                         <span class="limit">
                             {{mb_strimwidth($contact->opinion,0,25,"...","UTF-8")}}
                         </span>
@@ -224,39 +226,34 @@
                             <input type="hidden" name="id" value="{{$contact->id}}">
                             <button class="td__button">削除</button>
                         </form>
-
                     </div>
                 </div>
             @endforeach
         </div>
+
+
+
     </div>
+
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-   const vm = new Vue({
-      el: '#app',
-      data: {
-      },
-      watch:{
-      },
-      methods:{
-        show:function(index){
-            $(".showopinion").eq(index).find(".limit").css("display","none");
-            $(".showopinion").eq(index).find(".show").css("display","block");
-        },
-        hide:function(index){
-            $(".showopinion").eq(index).find(".limit").css("display","block");
-            $(".showopinion").eq(index).find(".show").css("display","none");
-        },
-
-      },
-      computed:{
-      },
-    })
-
-</script>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            methods:{
+                show:function(index){
+                    $(".showopinion").eq(index).find(".limit").css("display","none");
+                    $(".showopinion").eq(index).find(".show").css("display","block");
+                },
+                hide:function(index){
+                    $(".showopinion").eq(index).find(".limit").css("display","block");
+                    $(".showopinion").eq(index).find(".show").css("display","none");
+                },
+            },
+        })
+    </script>
 </body>
 </html>

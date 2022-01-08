@@ -20,7 +20,12 @@ Route::get('/', function () {
 
 Route::post("/add",[ContactController::class,"add"]);
 Route::post("/store",[ContactController::class,"store"]);
+
+
 Route::get("/admin",[ContactController::class,"index"]);
-Route::get("/search",[ContactController::class,"search"]);
+Route::post("/admin",[ContactController::class,"search"]);
+// Route::get("/search",[ContactController::class,"search"]);
+
+
 Route::post("/delete",[ContactController::class,"delete"]);
 Route::get("/reset",[ContactController::class,"reset"]);
