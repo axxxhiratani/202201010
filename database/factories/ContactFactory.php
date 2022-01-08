@@ -26,7 +26,7 @@ class ContactFactory extends Factory
         "fullname" => $this->faker->name,
         "gender" => $this->faker->numberBetween(1,2),
         "email" => $this->faker->safeEmail(),
-        "postcode" => "sfdaf",
+        "postcode" => $this->faker->numberBetween(1,999)."-".$this->faker->numberBetween(1,9999),
         "address" => $this->faker->address(),
         "building_name" => $this->faker->word(),
         "opinion" => $this->faker->text(100),
