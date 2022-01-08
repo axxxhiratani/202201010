@@ -23,6 +23,7 @@
         height: 40px;
         width: 100%;
         border-radius: 5px;
+        margin-bottom: 5px;
     }
     .container--table{
         margin: 0 auto;
@@ -264,6 +265,7 @@
                 address:"",
                 building_name:"",
                 opinion:"",
+                flg:"",
             },
             watch:{
                 firstname: function(){
@@ -279,9 +281,10 @@
                     localStorage.setItem("email",JSON.stringify(this.email));
                 },
                 postcode: function(){
-
                     this.postcode = this.changeFormat(this.postcode);
-                    this.search();
+                    if(this.flg){
+                        this.search();
+                    }
                     localStorage.setItem("postcode",JSON.stringify(this.postcode));
                 },
                 address: function(){
@@ -296,14 +299,18 @@
 
             },
             mounted: function(){
+                this.flg = false;
                 this.firstname = JSON.parse(localStorage.getItem("firstname")) || "";
                 this.secondname = JSON.parse(localStorage.getItem("secondname")) || "";
                 this.gender = JSON.parse(localStorage.getItem("gender")) || "";
                 this.email = JSON.parse(localStorage.getItem("email")) || "";
                 this.postcode = JSON.parse(localStorage.getItem("postcode")) || "";
-                this.address = JSON.parse(localStorage.getItem("address")) || "";
                 this.building_name = JSON.parse(localStorage.getItem("building_name")) || "";
                 this.opinion = JSON.parse(localStorage.getItem("opinion")) || "";
+                this.address = JSON.parse(localStorage.getItem("address")) || "";
+                setTimeout(() => {
+                    this.flg = true;
+                }, 1000);
             },
             methods:{
                 changeFormat:function(str){
@@ -340,9 +347,6 @@
                 },
             },
             computed:{
-                searchAddress:function(){
-                    console.log("update");
-                }
             },
             filters:{
             }
